@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JS CAR</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="myCanvas"></canvas>
+    <div class="controls">
+      <button onClick="addRandomPoint()">Add Point</button>
+      <button onClick="addRandomSegment()">Add Segment</button>
+    </div>
+    <script src="/js/math/graph.js"></script>
+    <script src="/js/premitives/point.js"></script>
+    <script src="/js/premitives/segment.js"></script>
+    <script>
+      myCanvas.width = 600;
+      myCanvas.height = 600;
+      const p1 = new Point(200, 200);
+      const p2 = new Point(500, 200);
+      const p3 = new Point(200, 400);
+      const p4 = new Point(500, 400);
+
+      const s1 = new Segment(p1, p2);
+      const s2 = new Segment(p1, p3);
+      const s3 = new Segment(p3, p4);
+      const s4 = new Segment(p4, p2);
+      const graph = new Graph([p1, p2, p3, p4], [s1, s2, s3, s4]);
+      const ctx = myCanvas.getContext("2d");
+      function addRandomSegment(){
+        const index1 = Math.floor(Math.random()* graph.points.length)
+        const index2 = Math.floor(Math.random()* graph.points.length)
+        graph.addSegment(new Segment(graph.points[index1],graph.points[index2]))
+        ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+        graph.draw(ctx);
+      }
+      function addRandomPoint() {
+        console.log("logged");
+       const success =  graph.tryAddPoint(
+          new Point(
+            Math.random() * myCanvas.width,
+            Math.random() * myCanvas.height
+          )
+        );
+        ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+        graph.draw(ctx);
+        console.log(success);
+      }
+
+      
+
+      graph.draw(ctx);
+    </script>
+  </body>
+</html>
